@@ -1,11 +1,11 @@
-
+import FeedCard from "../components/feed/feedcard";
 import { useState, useEffect } from "react";
 import { getfeed } from "../Services/services";
 function FeedPage() {
   const [Feed, setFeed] = useState([]);
   useEffect(() => {
     getfeed().then(
-      (data) => {setFeed(data)});
+      (data) => { setFeed(data) });
   }, []);
   return (
     <div
@@ -15,7 +15,7 @@ function FeedPage() {
       <div className="w-[360px]">
         {Feed.map((item) => (
           <FeedCard
-            key={item.id} {...item}/>
+            key={item.id} {...item} />
         ))}
 
       </div>
