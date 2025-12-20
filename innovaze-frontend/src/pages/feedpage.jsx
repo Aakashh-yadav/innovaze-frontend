@@ -1,4 +1,4 @@
-import FeedCard from "../components/feed/FeedCard";
+
 import { useState, useEffect } from "react";
 import { getfeed } from "../Services/services";
 function FeedPage() {
