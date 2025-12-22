@@ -3,23 +3,20 @@ import { useEffect, useRef, useState } from "react";
 function FeedCard({ user, role, caption, videosrc }) {
   const videoRef = useRef(null);
   const cardRef = useRef(null);
-  const [isMuted, setIsMuted] = useState(true);
+  const [muted, setMuted] = useState(true);
 
   useEffect(() => {
     const scrollRoot = document.getElementById("feed-scroll");
 
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!videoRef.current) return;
+      ([entry]) => {
+        if (!videoRef.current) return;
 
-          if (entry.isIntersecting) {
-            videoRef.current.currentTime = 0;
-            videoRef.current.play().catch(() => {});
-          } else {
-            videoRef.current.pause();
-          }
-        });
+        if (entry.isIntersecting) {
+          videoRef.current.play().catch(() => { });
+        } else {
+          videoRef.current.pause();
+        }
       },
       {
         root: scrollRoot,
@@ -27,45 +24,45 @@ function FeedCard({ user, role, caption, videosrc }) {
       }
     );
 
-    if (cardRef.current) observer.observe(cardRef.current);
+    const el = cardRef.current;
+    if (el) observer.observe(el);
 
     return () => {
-      if (cardRef.current) observer.unobserve(cardRef.current);
+      if (el) observer.unobserve(el);
+      observer.disconnect();
     };
   }, []);
 
-  // 🔥 Tap handler
   const toggleMute = () => {
     if (!videoRef.current) return;
-
-    const newMutedState = !isMuted;
-    videoRef.current.muted = newMutedState;
-    setIsMuted(newMutedState);
+    videoRef.current.muted = !videoRef.current.muted;
+    setMuted(videoRef.current.muted);
   };
 
   return (
     <div
       ref={cardRef}
-      onClick={toggleMute}   // 👈 TAP ANYWHERE
+      onClick={toggleMute}
       className="h-screen snap-start relative bg-black overflow-hidden"
     >
       <video
         ref={videoRef}
         src={videosrc}
         className="absolute inset-0 w-full h-full object-cover"
-        muted={isMuted}
+        muted={muted}
         loop
         playsInline
         preload="metadata"
       />
 
       {/* Overlay */}
-      <div className="absolute bottom-6 left-4 text-white z-10">
+      <div className="absolute bottom-6 left-4 right-4 text-white z-10">
         <p className="font-semibold">{user}</p>
-        <p className="text-sm opacity-70">{role}</p>
-        <p className="mt-1">{caption}</p>
-        <p className="text-xs opacity-60 mt-1">
-          {isMuted ? "Tap to unmute 🔇" : "Sound on 🔊"}
+        <p className="text-xs opacity-70">{role}</p>
+        <p className="mt-1 text-sm">{caption}</p>
+
+        <p className="mt-2 text-xs opacity-60">
+          Tap to {muted ? "unmute 🔊" : "mute 🔇"}
         </p>
       </div>
     </div>
