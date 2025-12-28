@@ -1,9 +1,11 @@
-import FeedCard from "../components/feed/FeedCard";
+import FeedCard from "../components/feed/feedcard";
 import { useState, useEffect } from "react";
 import { getfeed } from "../Services/services";
+import { useNavigate } from 'react-router-dom';
 
 function FeedPage() {
   const [feed, setFeed] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     getfeed().then((data) => setFeed(data));
@@ -18,6 +20,14 @@ function FeedPage() {
         {feed.map((item) => (
           <FeedCard key={item.id} {...item} />
         ))}
+      </div>
+      <div className="fixed top-4 right-4">
+        <button
+          onClick={() => navigate('/dashboard')}
+          className="bg-blue-500 text-white px-4 py-2 rounded"
+        >
+          Go to Dashboard
+        </button>
       </div>
     </div>
   );

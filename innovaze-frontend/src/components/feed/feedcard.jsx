@@ -1,9 +1,17 @@
 import { useEffect, useRef, useState } from "react";
+import { useContext } from "react";
+import { SaveContext } from "../../Context/SaveContext.jsx";
+import { data } from "autoprefixer";
+
+
+
+
 
 function FeedCard({ user, role, caption, videosrc }) {
   const videoRef = useRef(null);
   const cardRef = useRef(null);
   const [muted, setMuted] = useState(true);
+  const {  savePitch } = useContext(SaveContext);
 
   useEffect(() => {
     const scrollRoot = document.getElementById("feed-scroll");
@@ -64,6 +72,13 @@ function FeedCard({ user, role, caption, videosrc }) {
         <p className="mt-2 text-xs opacity-60">
           Tap to {muted ? "unmute 🔊" : "mute 🔇"}
         </p>
+        <button
+          onClick={()=>savePitch(data)}
+          className="mt-4 text-black bg-white px-4 py-2 rounded"
+          >
+        Save Pitch
+
+        </button>
       </div>
     </div>
   );
