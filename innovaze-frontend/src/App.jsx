@@ -7,10 +7,12 @@ import { SaveContext, SaveProvider } from './Context/SaveContext.jsx';
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <SaveProvider> <Route path="/" element={<FeedPage />} /></SaveProvider>
-        <Route path="/dashboard" element={<Dashboard />} />
-      </Routes>
+      <SaveProvider>
+        <Routes>
+          <Route path="/" element={<FeedPage />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+        </Routes>
+      </SaveProvider>
     </BrowserRouter>
 
   )

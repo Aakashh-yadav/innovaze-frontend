@@ -1,10 +1,17 @@
-import { createContext, useState } from "react";
-const SaveContext = createContext();
+import { createContext, useEffect, useState } from "react";
+const SaveContext = createContext(null);
 const SaveProvider = ({ children }) => {
     const [savedPitches, setSavedPitches] = useState(() => {
-        const storedPitches = localStorage.getItem("savedPitches");
-        return storedPitches ? JSON.parse(storedPitches) : [];
+        []
+        // const storedPitches = localStorage.getItem("savedPitches");
+        // return storedPitches ? JSON.parse(storedPitches) : [];
     });
+    useEffect(() => {
+        const saved = localStorage.getItem("savedPitches");
+        if (saved) {
+            setSavedPitches(JSON.parse(saved));
+        }
+    },[]);
     // Function to save a pitch
     const savePitch = (pitch) => {
         const updatedPitches = [...savedPitches, pitch];

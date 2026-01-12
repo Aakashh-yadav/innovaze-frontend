@@ -11,7 +11,7 @@ function FeedCard({ user, role, caption, videosrc }) {
   const videoRef = useRef(null);
   const cardRef = useRef(null);
   const [muted, setMuted] = useState(true);
-  const {  savePitch } = useContext(SaveContext);
+  const {savePitch} = useContext(SaveContext);
 
   useEffect(() => {
     const scrollRoot = document.getElementById("feed-scroll");
@@ -73,7 +73,9 @@ function FeedCard({ user, role, caption, videosrc }) {
           Tap to {muted ? "unmute 🔊" : "mute 🔇"}
         </p>
         <button
-          onClick={()=>savePitch(data)}
+          onClick={(e)=>{
+            e.stopPropagation();
+            savePitch(data)}}
           className="mt-4 text-black bg-white px-4 py-2 rounded"
           >
         Save Pitch
