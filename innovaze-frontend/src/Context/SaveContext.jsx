@@ -1,34 +1,58 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useState, useEffect } from "react";
+
 const SaveContext = createContext(null);
+
 const SaveProvider = ({ children }) => {
     const [savedPitches, setSavedPitches] = useState(() => {
-        []
-        // const storedPitches = localStorage.getItem("savedPitches");
-        // return storedPitches ? JSON.parse(storedPitches) : [];
-    });
-    useEffect(() => {
-        const saved = localStorage.getItem("savedPitches");
-        if (saved) {
-            setSavedPitches(JSON.parse(saved));
+        try {
+            const stored = localStorage.getItem("savedPitches");
+
+            if (!stored) {
+                return [];
+            }
+
+            const parsed = JSON.parse(stored);
+            return Array.isArray(parsed) ? parsed : [];
+        } catch (error) {
+            console.error("Corrupted savedPitches, resetting", error);
+            localStorage.removeItem("savedPitches");
+            return [];
         }
-    },[]);
-    // Function to save a pitch
+    });
+
+    // ✅ SYNC STATE TO LOCALSTORAGE
+    useEffect(() => {
+        localStorage.setItem("savedPitches", JSON.stringify(savedPitches));
+    }, [savedPitches]);
+
+    // ✅ SAVE PITCH (NO DUPLICATES)
     const savePitch = (pitch) => {
-        const updatedPitches = [...savedPitches, pitch];
-        setSavedPitches(updatedPitches);
-        localStorage.setItem("savedPitches", JSON.stringify(updatedPitches));
+        setSavedPitches((prev) => {
+            const exists = prev.find((p) => p.id === pitch.id);
+            if (exists) return prev;
+
+            const updated = [...prev, pitch];
+            localStorage.setItem("savedPitches", JSON.stringify(updated));
+            return updated;
+        });
     };
-    // Function to remove a pitch
+
+    // ✅ REMOVE PITCH
     const removePitch = (pitchId) => {
-        const updatedPitches = savedPitches.filter((pitch) => pitch.id !== pitchId);
-        setSavedPitches(updatedPitches);
-        localStorage.setItem("savedPitches", JSON.stringify(updatedPitches));
+        setSavedPitches((prev) => {
+            const updated = prev.filter((p) => p.id !== pitchId);
+            localStorage.setItem("savedPitches", JSON.stringify(updated));
+            return updated;
+        });
     };
 
     return (
-        <SaveContext.Provider value={{ savedPitches, savePitch, removePitch }}>
+        <SaveContext.Provider
+            value={{ savedPitches, savePitch, removePitch }}
+        >
             {children}
         </SaveContext.Provider>
     );
-}
+};
+
 export { SaveContext, SaveProvider };
