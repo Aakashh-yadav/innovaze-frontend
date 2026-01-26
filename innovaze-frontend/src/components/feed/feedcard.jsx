@@ -11,8 +11,9 @@ function FeedCard({ user, role, caption, videosrc }) {
   const videoRef = useRef(null);
   const cardRef = useRef(null);
   const [muted, setMuted] = useState(true);
-  const {savePitch} = useContext(SaveContext);
+  const { savePitch, savedPitches, RemovePitch } = useContext(SaveContext);
 
+  const isSaved = savedPitches.some((pitch) => pitch.id === data.id);
   useEffect(() => {
     const scrollRoot = document.getElementById("feed-scroll");
 
@@ -72,14 +73,19 @@ function FeedCard({ user, role, caption, videosrc }) {
         <p className="mt-2 text-xs opacity-60">
           Tap to {muted ? "unmute 🔊" : "mute 🔇"}
         </p>
-        <button
-          onClick={(e)=>{
-            e.stopPropagation();
-            savePitch(data)}}
-          className="mt-4 text-black bg-white px-4 py-2 rounded"
-          >
-        Save Pitch
-
+        
+        <button onClick={(e) => {
+          e.stopPropagation();
+          if (isSaved) {
+            RemovePitch(data.id);
+          }
+          else {
+            savePitch(data)
+          }
+        }}
+          className={`mt-4 px-4 py-2 rounded-full text-sm font-medium ${isSaved ? 'bg-red-600 text-white' : 'bg-blue-600 text-white'}`}
+        >
+          {isSaved ? 'Saved' : 'Save'}
         </button>
       </div>
     </div>
