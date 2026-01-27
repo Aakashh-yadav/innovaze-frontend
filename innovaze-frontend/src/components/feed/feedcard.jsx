@@ -86,6 +86,7 @@ function FeedCard({ user, role, caption, videosrc }) {
           className={`mt-4 px-4 py-2 rounded-full text-sm font-medium ${isSaved ? 'bg-red-600 text-white' : 'bg-blue-600 text-white'}`}
         >
           {isSaved ? 'Saved' : 'Save'}
+          {/* tomarrow hume dashboard or ji saved lika aa rha hai iska solution krna hai  */}
         </button>
       </div>
     </div>
