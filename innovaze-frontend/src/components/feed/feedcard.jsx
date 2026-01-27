@@ -13,7 +13,7 @@ function FeedCard({ user, role, caption, videosrc }) {
   const [muted, setMuted] = useState(true);
   const { savePitch, savedPitches, RemovePitch } = useContext(SaveContext);
 
-  const isSaved = savedPitches.some((pitch) => pitch.id === data.id);
+  const isSaved = data?.id && savedPitches.some((pitch) => pitch.id === data.id);
   useEffect(() => {
     const scrollRoot = document.getElementById("feed-scroll");
 
