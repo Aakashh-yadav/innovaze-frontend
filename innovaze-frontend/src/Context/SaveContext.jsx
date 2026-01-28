@@ -27,23 +27,17 @@ const SaveProvider = ({ children }) => {
 
     // ✅ SAVE PITCH (NO DUPLICATES)
     const savePitch = (pitch) => {
+        if (!pitch || !pitch.id) return; // Safety check
         setSavedPitches((prev) => {
             const exists = prev.find((p) => p.id === pitch.id);
             if (exists) return prev;
-
-            const updated = [...prev, pitch];
-            localStorage.setItem("savedPitches", JSON.stringify(updated));
-            return updated;
+            return [...prev, pitch]; // Effect below will handle localStorage
         });
     };
 
     // ✅ REMOVE PITCH
     const removePitch = (pitchId) => {
-        setSavedPitches((prev) => {
-            const updated = prev.filter((p) => p.id !== pitchId);
-            localStorage.setItem("savedPitches", JSON.stringify(updated));
-            return updated;
-        });
+        setSavedPitches((prev) => prev.filter((p) => p.id !== pitchId));
     };
 
     return (

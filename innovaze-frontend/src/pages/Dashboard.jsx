@@ -1,8 +1,10 @@
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { SaveContext } from "../Context/SaveContext";
 export default function Dashboard() {
 
   const { savedPitches, removePitch } = useContext(SaveContext);
+  const navigate = useNavigate();
   return (
     <div className="min-h-screen bg-black text-white p-4">
       <h1 className=" text-2xl font-bold mb-4">
@@ -43,6 +45,14 @@ export default function Dashboard() {
           }
 
         </div>
+        <div className="fixed top-4 right-4">
+          <button
+            onClick={() => navigate('/')}
+            className="bg-blue-500 text-white px-4 py-2 rounded"
+          >
+            back to feed
+          </button>
+        </div>
         <div className="bg-grey-900 p-4 rounded-lg">
           <h2 className="text-lg font-semibold mb-2">
             Your activity!!
@@ -55,4 +65,4 @@ export default function Dashboard() {
     </div>
   );
 }
-// ye sala bug theek nhi hua please work on this vedio nhi aa rhi dashboard me wala bug
+// ab saare errors fix kar diye ab sirf aage bdna hai jisse humara application showcase hoga bss ek baat ka dhyaan rkhna hai chat gpt se shi to google ka ai mode hai 

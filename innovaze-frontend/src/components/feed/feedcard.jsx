@@ -1,19 +1,20 @@
 import { useEffect, useRef, useState } from "react";
 import { useContext } from "react";
 import { SaveContext } from "../../Context/SaveContext.jsx";
-import { data } from "autoprefixer";
+// import { data } from "autoprefixer";
 
 
 
 
 
-function FeedCard({ user, role, caption, videosrc }) {
+function FeedCard({ id,user, role, caption, videosrc }) {
   const videoRef = useRef(null);
   const cardRef = useRef(null);
   const [muted, setMuted] = useState(true);
-  const { savePitch, savedPitches, RemovePitch } = useContext(SaveContext);
+  const { savePitch, savedPitches, removePitch } = useContext(SaveContext);
+  const currentReel = { id, user, role, caption, videosrc };
 
-  const isSaved = data?.id && savedPitches.some((pitch) => pitch.id === data.id);
+  const isSaved = id && savedPitches.some((pitch) => pitch.id === id);
   useEffect(() => {
     const scrollRoot = document.getElementById("feed-scroll");
 
@@ -40,7 +41,7 @@ function FeedCard({ user, role, caption, videosrc }) {
       if (el) observer.unobserve(el);
       observer.disconnect();
     };
-  }, []);
+  }, [isSaved]);
 
   const toggleMute = () => {
     if (!videoRef.current) return;
@@ -48,45 +49,27 @@ function FeedCard({ user, role, caption, videosrc }) {
     setMuted(videoRef.current.muted);
   };
 
-  return (
-    <div
-      ref={cardRef}
-      onClick={toggleMute}
-      className="h-screen snap-start relative bg-black overflow-hidden"
-    >
-      <video
-        ref={videoRef}
-        src={videosrc}
-        className="absolute inset-0 w-full h-full object-cover"
-        muted={muted}
-        loop
-        playsInline
-        preload="metadata"
-      />
+   return (
+    <div ref={cardRef} onClick={toggleMute} className="h-screen w-full snap-start relative bg-black overflow-hidden">
+      <video ref={videoRef} src={videosrc} className="absolute inset-0 w-full h-full object-cover" muted={muted} loop playsInline preload="metadata" />
 
-      {/* Overlay */}
       <div className="absolute bottom-6 left-4 right-4 text-white z-10">
         <p className="font-semibold">{user}</p>
         <p className="text-xs opacity-70">{role}</p>
         <p className="mt-1 text-sm">{caption}</p>
-
-        <p className="mt-2 text-xs opacity-60">
-          Tap to {muted ? "unmute 🔊" : "mute 🔇"}
-        </p>
         
-        <button onClick={(e) => {
-          e.stopPropagation();
-          if (isSaved) {
-            RemovePitch(data.id);
-          }
-          else {
-            savePitch(data)
-          }
-        }}
-          className={`mt-4 px-4 py-2 rounded-full text-sm font-medium ${isSaved ? 'bg-red-600 text-white' : 'bg-blue-600 text-white'}`}
+        <button 
+          onClick={(e) => {
+            e.stopPropagation();
+            if (isSaved) {
+              removePitch(id); // FIXED: matched lowercase name
+            } else {
+              savePitch(currentReel); // FIXED: sending the object
+            }
+          }}
+          className={`mt-4 px-4 py-2 rounded-full text-sm font-medium ${isSaved ? 'bg-red-600' : 'bg-blue-600'}`}
         >
           {isSaved ? 'Saved' : 'Save'}
-          {/* tomarrow hume dashboard or ji saved lika aa rha hai iska solution krna hai  */}
         </button>
       </div>
     </div>
