@@ -1,13 +1,14 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, UseContext } from "react";
 import { useContext } from "react";
 import { SaveContext } from "../../Context/SaveContext.jsx";
-// import { data } from "autoprefixer";
+import { UserContext } from "../../Context/UserContext.jsx";
 
 
 
 
 
-function FeedCard({ id,user, role, caption, videosrc }) {
+
+function FeedCard({ id, user, role, caption, videosrc }) {
   const videoRef = useRef(null);
   const cardRef = useRef(null);
   const [muted, setMuted] = useState(true);
@@ -49,7 +50,7 @@ function FeedCard({ id,user, role, caption, videosrc }) {
     setMuted(videoRef.current.muted);
   };
 
-   return (
+  return (
     <div ref={cardRef} onClick={toggleMute} className="h-screen w-full snap-start relative bg-black overflow-hidden">
       <video ref={videoRef} src={videosrc} className="absolute inset-0 w-full h-full object-cover" muted={muted} loop playsInline preload="metadata" />
 
@@ -57,20 +58,31 @@ function FeedCard({ id,user, role, caption, videosrc }) {
         <p className="font-semibold">{user}</p>
         <p className="text-xs opacity-70">{role}</p>
         <p className="mt-1 text-sm">{caption}</p>
-        
-        <button 
-          onClick={(e) => {
-            e.stopPropagation();
-            if (isSaved) {
-              removePitch(id); // FIXED: matched lowercase name
-            } else {
-              savePitch(currentReel); // FIXED: sending the object
-            }
-          }}
-          className={`mt-4 px-4 py-2 rounded-full text-sm font-medium ${isSaved ? 'bg-red-600' : 'bg-blue-600'}`}
-        >
-          {isSaved ? 'Saved' : 'Save'}
-        </button>
+
+        {role === "beginner" && (
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              if (isSaved) {
+                removePitch(id); // FIXED: matched lowercase name
+              } else {
+                savePitch(currentReel); // FIXED: sending the object
+              }
+            }}
+            className={`mt-4 px-4 py-2 rounded-full text-sm font-medium ${isSaved ? 'bg-red-600' : 'bg-blue-600'}`}
+          >
+            {isSaved ? 'Saved' : 'Save'}
+          </button>
+        )}
+        {role === "Mid-level" && (
+          <button>
+            Contect Founder
+          </button>)}
+        {role === "Investor" && (
+          <button>
+            Invest Now
+          </button>)}
+
       </div>
     </div>
   );

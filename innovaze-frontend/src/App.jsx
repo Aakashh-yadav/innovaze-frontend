@@ -7,6 +7,7 @@ import Navbar from './components/navbar.jsx';
 function App() {
   return (
     <BrowserRouter>
+    <UserProvider>
       <SaveProvider>
         {/* ADDED: Ensure the main app div covers the full width and height */}
         <div className="min-h-screen w-screen bg-black"> 
@@ -17,6 +18,7 @@ function App() {
           </Routes>
         </div>
       </SaveProvider>
+      </UserProvider>
     </BrowserRouter>
   );
 }
