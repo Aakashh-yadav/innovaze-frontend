@@ -1,17 +1,19 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from 'react-router-dom';
+
 import FeedCard from "../components/feed/feedcard";
 import { getfeed } from "../Services/services";
 
+
 function FeedPage() {
   const [feed, setFeed] = useState([]);
-  const navigate = useNavigate();
 
   useEffect(() => {
     getfeed().then((data) => setFeed(data));
   }, []);
 
   return (
+    <>
+   
     <div
       id="feed-scroll"
       className="h-screen bg-black overflow-y-scroll snap-y snap-mandatory flex justify-center"
@@ -22,6 +24,7 @@ function FeedPage() {
         ))}
       </div>
     </div>
+    </>
   );
 }
 

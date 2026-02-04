@@ -1,9 +1,14 @@
-import { useNavigate, useLocation } from "react-router-dom"; // Syntax error here
-import { MessageCircle, Bell, User } from 'lucide-react'; // Import the User icon
+import { useNavigate, useLocation } from "react-router-dom";
+import { MessageCircle, Bell, User, ChevronDown } from 'lucide-react'; // Added Chevron icon
+import { useContext } from "react";
+import { UserContext } from "../Context/UserContext.jsx"; // Import your context
 
 function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
+  
+  // Access the global user and the setter from context
+  const { user, setUser } = useContext(UserContext);
 
   const isActive = (path) => location.pathname === path;
 
@@ -12,12 +17,11 @@ function Navbar() {
   const inactiveTabClasses = "text-gray-400 p-2 w-1/2 flex items-center justify-center";
 
   return (
-    // Outer container: uses 'justify-between' to space elements out
     <nav className="fixed top-6 left-0 right-0 z-50 flex justify-between items-center px-4">
       
-      {/* 1. Messages Button (Left side) */}
+      {/* 1. Messages Button */}
       <button 
-        onClick={() => alert("Navigate to Messages!")}
+        onClick={() => alert("Messages feature coming soon!")}
         className="text-gray-400 hover:text-white p-2 rounded-full hover:bg-gray-800 transition duration-300 pointer-events-auto"
       >
         <MessageCircle size={20} />
@@ -43,20 +47,34 @@ function Navbar() {
         </button>
       </div>
 
-      {/* 3. Right Icons (Notifications & Profile) wrapped in a flex container */}
+      {/* 3. Right Side: Dropdown + Notifications + Profile */}
       <div className="flex items-center space-x-3"> 
+        
+        {/* ROLE SWITCHER DROPDOWN */}
+        <div className="relative flex items-center bg-gray-800/50 border border-white/10 rounded-lg px-2 py-1">
+          <select
+            value={user}
+            onChange={(e) => setUser(e.target.value)}
+            className="bg-transparent text-white text-xs font-semibold outline-none cursor-pointer appearance-none pr-6 pl-2"
+          >
+            <option className="bg-gray-900" value="beginner">Beginner</option>
+            <option className="bg-gray-900" value="Mid-level">Mid-level</option>
+            <option className="bg-gray-900" value="Investor">Investor</option>
+          </select>
+          {/* Custom arrow icon since appearance-none hides the default one */}
+          <ChevronDown size={14} className="absolute right-2 pointer-events-none text-gray-400" />
+        </div>
+
         <button 
-          onClick={() => alert("Navigate to Notifications!")}
+          onClick={() => alert("No new notifications")}
           className="text-gray-400 hover:text-white p-2 rounded-full hover:bg-gray-800 transition duration-300 relative pointer-events-auto"
         >
           <Bell size={20} />
-          {/* Optional: A simple red badge */}
-          <span className="absolute top-0 right-0 block h-2 w-2 rounded-full ring-2 ring-black bg-red-500" />
+          <span className="absolute top-1 right-1 block h-2 w-2 rounded-full ring-2 ring-black bg-red-500" />
         </button>
 
-        {/* 4. Profile Button (Right side, next to notifications) */}
         <button
-          onClick={() => alert("Navigate to Profile!")}
+          onClick={() => navigate("/dashboard")}
           className="text-gray-400 hover:text-white p-2 rounded-full hover:bg-gray-800 transition duration-300 pointer-events-auto"
         >
           <User size={20} />

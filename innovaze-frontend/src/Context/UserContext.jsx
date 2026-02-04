@@ -1,8 +1,10 @@
-import { useState } from "react";
-import { UserContext } from "./UserContext";
+// src/Context/UserContext.jsx
+import React, { createContext, useState } from "react"; // Added 'React'
+
+export const UserContext = createContext(null); 
 
 export const UserProvider = ({ children }) => {
-    const [user, setUser] = useState("beginner" , "Mid-level", "Investor");
+    const [user, setUser] = useState("beginner"); 
    
     return (
         <UserContext.Provider value={{ user, setUser }}>
@@ -10,4 +12,4 @@ export const UserProvider = ({ children }) => {
         </UserContext.Provider>
     );
 };
-//Agli baar Role Swithching ka feature add karna hai 
+//  agle baar dashboard pe jaake aana hai or use user context ka role change karna hai to wo reflect ho jaye Dash board me

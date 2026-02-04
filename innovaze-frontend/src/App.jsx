@@ -1,3 +1,4 @@
+import { UserProvider } from './Context/UserContext.jsx';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import FeedPage from './pages/feedpage.jsx';
 import Dashboard from './pages/Dashboard.jsx';
