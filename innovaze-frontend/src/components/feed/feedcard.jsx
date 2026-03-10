@@ -64,7 +64,7 @@ function FeedCard({ id, user: posterName, role: posterRole, caption, videosrc })
             )}
 
             {currentUserRole === "Investor" && (
-            <button className="bg-gold-500 bg-yellow-500 text-black px-6 py-2 rounded-full text-sm font-bold">
+            <button className="bg-white-500 bg-yellow-500 text-whtie px-6 py-2 rounded-full text-sm font-bold">
                 Invest Now
             </button>
             )}
