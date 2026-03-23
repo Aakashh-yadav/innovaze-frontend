@@ -1,1 +1,0 @@
-export const InvestorDash = () => <div className="text-white p-10">💰 Investor Portfolio & Active Pitches</div>;
