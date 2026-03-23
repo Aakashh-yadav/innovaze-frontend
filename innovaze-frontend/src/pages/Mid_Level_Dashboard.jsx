@@ -1,0 +1,1 @@
+export const MidLevelDash = () => <div className="text-white p-10">🛠️ Mid-level Project Management</div>;
